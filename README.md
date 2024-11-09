@@ -1,1 +1,1 @@
-# modeling-mental-health-using-markov-chains
+# Modeling Mental Health Progression in Medical Students Using Markov Chains
