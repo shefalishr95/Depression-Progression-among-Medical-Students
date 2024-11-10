@@ -10,7 +10,7 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)  # Suppress warnings
 
 # Load and prepare data
-data = pd.read_csv(r'C:\Users\shefa\Documents\GitHub\modeling-mental-health-using-markov-chains\data\data.csv')
+data = pd.read_csv('./data/data.csv')
 # Assumes columns: 'student_id', 'time_point', 'cesd_score', etc.
 
 # Step 1: Define the Set of Latent States (Using Gaussian Mixture Model as a Latent Markov Model)
