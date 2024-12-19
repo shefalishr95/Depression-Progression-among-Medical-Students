@@ -1,0 +1,142 @@
+---
+title: "Capstone_regression"
+author: "Prathikanti"
+date: "2024-11-11"
+output: html_document
+---
+
+```{r}
+dat <- read.csv("C:/Users/vishu/ColumbiaSemester3/Keller/Capstone/data_nwave3_nomissing.csv")
+head(dat)
+```
+1. Backward Elimination
+
+```{r}
+# Fit the full model
+full_model <- lm(cesd ~ ., data = dat)
+
+# Perform stepwise regression using backward elimination
+backward_model <- step(full_model, direction = "backward")
+
+# View the final model
+summary(backward_model)
+
+```
+
+2. Forward Selection
+```{r}
+# Fit the null model (just the intercept)
+null_model <- lm(cesd ~ 1, data = dat)
+
+# Fit the full model (for comparison)
+full_model <- lm(cesd ~ ., data = dat)
+
+# Perform stepwise regression using forward selection
+forward_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "forward")
+
+# View the final model
+summary(forward_model)
+
+```
+
+3. Stepwise Selection (Both Directions)
+```{r}
+# Fit the full model
+full_model <- lm(cesd ~ ., data = dat)
+
+# Perform stepwise regression with both directions
+stepwise_model <- step(full_model, direction = "both")
+
+# View the final model
+summary(stepwise_model)
+
+
+
+library(broom)
+# Extract the coefficients from the stepwise model
+coefficients <- tidy(stepwise_model)
+
+# View the coefficients
+print(coefficients)
+
+library(knitr)
+
+# Create a nice-looking table of the coefficients
+kable(coefficients, digits = c(0, 3, 3, 3, 3), caption = "Stepwise Model Coefficients")
+
+```
+
+4. Using BIC instead of AIC
+```{r}
+# Perform stepwise regression using BIC
+bic_model <- step(full_model, direction = "both", k = log(nrow(dat)))
+
+# View the final model
+summary(bic_model)
+
+```
+
+5. Using Ridge regression
+```{r}
+library(glmnet)
+
+X <- model.matrix(cesd ~ year + health + psyt + cop_e + 
+    cop_h + fmale + socsup + educ_par + bdi_su + stai + stress + 
+    mbi_ex + mbi_cy, data = dat)[, -1]  # Predictors matrix
+y <- dat$cesd  # Outcome vector
+
+
+ridge_model <- cv.glmnet(X, y, alpha = 0)  # Fit Ridge with cross-validation
+plot(ridge_model)  # Plot the cross-validation curve
+best_lambda <- ridge_model$lambda.min  # Optimal lambda
+
+coef(ridge_model, s = "lambda.min")  # Coefficients for Ridge
+
+# ridge_model$lambda.min
+
+```
+
+6. Mixed effects model 
+```{r}
+library(lme4)
+
+# Fit a mixed-effects model with random intercepts for each student
+lme_model <- lmer(cesd ~ year + health + psyt + cop_e + 
+    cop_h + fmale + socsup + educ_par + bdi_su + stai + stress + 
+    mbi_ex + mbi_cy + (1 | student_id), data = dat)
+
+# View the model summary
+summary(lme_model)
+
+# Residual plot
+plot(lme_model, which = 1)  # Diagnostic plot for residuals vs fitted values
+
+#qqplot
+residuals <- resid(lme_model)
+qqnorm(residuals, main = "Q-Q Plot of Residuals")
+qqline(residuals, col = "red", lwd = 2)
+
+
+```
+
+7. Tabulated output
+```{r}
+
+# Load the package
+library(car)
+
+
+vif_values <- vif(stepwise_model)
+
+# Print the VIF values
+print(vif_values)
+
+
+
+```
+
+```{r}
+
+
+```
+

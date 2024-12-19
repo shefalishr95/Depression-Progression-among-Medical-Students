@@ -1,4 +1,4 @@
-# Modeling Mental Health Progression in Medical Students Using Markov Chains
+# Depression Progression among Medical Students: A Longitudinal Analysis
 
 ## Project Overview
 
@@ -16,16 +16,9 @@ In addition, the dataset includes biopsychosocial variables, including gender id
 
 ## Objectives
 
-1. **Model Mental Health Transitions**: Use a Markov chain to model the changes in depression states (e.g., low, moderate, severe) over time, with a goal of understanding equilibrium states and trends in mental health.
+1. **Model Mental Health Transitions**: Use a Hidden Markov Model to model the changes in depression states (e.g., low, moderate, severe) over time, with a goal of understanding equilibrium states and trends in mental health.
    
-2. **Polynomial Regression**: Apply polynomial regression to study the non-linear trend in mental health, hypothesizing that mental health follows a parabolic shape during the course of medical school.
-
-3. **Comparison of Models**: Compare the predictive capabilities of the Markov chain model and polynomial regression over time.
-
-## Methods
-
-- **Markov Chain Modeling**: Track transitions between different depression states and analyze the effects of covariates like social support and coping strategies on these transitions.
-- **Polynomial Regression**: Model mental health trends to capture non-linear patterns as medical students progress through their education.
+2. **Regression**: Apply multiple regression to study the non-linear trend in mental health.
 
 
 Source:
